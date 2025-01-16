@@ -20,7 +20,7 @@ class wallpaperhome extends StatelessWidget
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Wallpaper App",
-      home: staggerHome(),
+      home: wallhome(),
     );
   }
 }
