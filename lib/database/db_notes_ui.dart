@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter_wigdets/database/note_model.dart';
+import 'add_note_page.dart';
 import 'db_helper.dart';
 
 void main() {
@@ -182,7 +183,9 @@ class dbNotesUi extends State<dbNoteUi> {
         onPressed: () async {
           titleController.clear();
           descController.text = "";
-          showModalBottomSheet(
+
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> addNote()));
+          /*showModalBottomSheet(
 
               ///BottomSheet will not clickable
               // isDismissible: false,
@@ -194,81 +197,7 @@ class dbNotesUi extends State<dbNoteUi> {
               //isScrollControlled: true,
 
               context: context,
-              builder: (_) {
-                return Container(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Add Notes",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w900),
-                        ),
-                        SizedBox(
-                          height: 11,
-                        ),
-                        TextField(
-                          controller: titleController,
-                          decoration: InputDecoration(
-                            label: Text("Note Title"),
-                            hintText: "Enter Note Title",
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 11,
-                        ),
-                        TextField(
-                          controller: descController,
-                          minLines: 4,
-                          maxLines: 6,
-                          decoration: InputDecoration(
-                            label: Text("Note Desc"),
-                            hintText: "Enter Note Desc Here...",
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(21),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 11,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton(
-                              onPressed: () async {
-                               bool check = await dbHelper.addNote(newNote: NotesModel(title: titleController.text, desc: descController.text));
-                                if (check) {
-                                  getNotes();
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: Text("Add"),
-                            ),
-                            OutlinedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Cancel"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              });
+              builder: (_) { */
         },
         child: Icon(Icons.add),
       ),
