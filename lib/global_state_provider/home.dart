@@ -24,18 +24,32 @@ class homeScreen extends StatelessWidget {
 class homePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("built again");
     return Scaffold(
       appBar: AppBar(
         title: Text("Counter App Provider"),
         centerTitle: true,
       ),
-      body: Container(
-        child: Center(
-            child: Text(
-          "${Provider.of<CounterProvider>(context).getValue()}",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-        )),
-      ),
+      body:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text("You have pushed the button many times")),
+            Center(
+              child: Consumer<CounterProvider>(builder: (cont, provider, child){
+                print("Consumer built again");
+                return Center(
+                  child: Text(
+                    '${provider.getValue()}'
+                  //"${context.watch<CounterProvider>().getValue()}"
+                    //"${Provider.of<CounterProvider>(context).getValue()}"
+                    ,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900),
+                  ),
+                );
+              }),
+            ),
+          ],
+        ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

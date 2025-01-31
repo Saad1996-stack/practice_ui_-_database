@@ -10,11 +10,18 @@ class SecondPageProvider extends StatelessWidget {
       appBar: AppBar(
         title: Text("Add"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<CounterProvider>(context, listen: false).incrementCount();
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FloatingActionButton(onPressed: (){
+            context.read<CounterProvider>().incrementCount();
+          },child: Icon(Icons.add),
+          ),
+          FloatingActionButton(onPressed: ()
+          {
+            context.read<CounterProvider>().decrementCount();
+          },child: Icon(Icons.remove),),
+        ],
       ),
     );
   }
