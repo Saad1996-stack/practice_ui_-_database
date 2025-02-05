@@ -2,15 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_flutter_wigdets/state_management_cubit/add_note_cubit.dart';
+import 'package:learning_flutter_wigdets/state_management_cubit/db_helper_cubit.dart';
 import 'package:learning_flutter_wigdets/state_management_cubit/list_cubit_state.dart';
 import 'package:learning_flutter_wigdets/state_management_cubit/list_map_cubit.dart';
 import 'package:learning_flutter_wigdets/state_management_cubit/list_model.dart';
 
 void main() {
-  runApp(BlocProvider(
-    create: (context) => ListCubit(),
-    child: noteListPage(),
-  ));
+ runApp(BlocProvider(create: (context)=> ListCubit(DBHelperCubit.getInstances()),child: noteListPage(),));
 }
 
 class noteListPage extends StatelessWidget {
@@ -19,15 +17,32 @@ class noteListPage extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "List Notes Cubit ",
-        home: noteList());
+      home: noteList(),
+    );
   }
 }
 
-class noteList extends StatelessWidget {
+class noteList extends StatefulWidget {
+  @override
+  State<noteList> createState() => _noteListState();
+}
+
+class _noteListState extends State<noteList>
+{
+
   TextEditingController updateTitleController = TextEditingController();
   TextEditingController updateDescController = TextEditingController();
 
   List<ListCubitModel> mNotes = [];
+
+  //DBHelperCubit dbHelperCubit = DBHelperCubit.getInstances();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ListCubit>().fetchInitialNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,22 +50,25 @@ class noteList extends StatelessWidget {
         title: Text("Notes List Cubit"),
       ),
       body: BlocBuilder<ListCubit, ListState>(
-        builder: (ctx, state) {
-          mNotes = ctx.watch<ListCubit>().state.mData;
+        builder: (ctx, state)
+        {
+          mNotes = state.mData;
+          //mNotes = ctx.watch<ListCubit>().fetchInitialNotes();
           return mNotes.isNotEmpty
               ? ListView.builder(
                   itemCount: mNotes.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (context, index)
+                  {
                     return ListTile(
-                      title: Text(mNotes[index].title),
-                      subtitle: Text(mNotes[index].desc),
+                      title: Text(mNotes[index].titleCubit),
+                      subtitle: Text(mNotes[index].descCubit),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                               onPressed: () {
-                                updateTitleController.text = mNotes[index].title ?? "";
-                                updateDescController.text = mNotes[index].desc ?? "";
+                                updateTitleController.text = mNotes[index].titleCubit ?? "";
+                                updateDescController.text = mNotes[index].descCubit ?? "";
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (_) {
@@ -125,18 +143,7 @@ class noteList extends StatelessWidget {
                                                 children: [
                                                   ElevatedButton(
                                                       onPressed: () {
-                                                        BlocProvider.of<
-                                                                    ListCubit>(
-                                                                context,
-                                                                listen: false)
-                                                            .updateNote(
-                                                                index: index,
-                                                                updateTitle:
-                                                                    updateTitleController
-                                                                        .text,
-                                                                updateDesc:
-                                                                    updateDescController
-                                                                        .text);
+                                                        BlocProvider.of<ListCubit>(context, listen: false).updateNote(listCubitModel: ListCubitModel(titleCubit: updateTitleController.text, descCubit: updateDescController.text, noteCubitId: mNotes[index].noteCubitId));
                                                         Navigator.pop(context);
                                                       },
                                                       child: Text("Update")),
@@ -152,16 +159,11 @@ class noteList extends StatelessWidget {
                                         ),
                                       );
                                     });
-                              /*  FloatingActionButton(
-                                  onPressed: () {},
-                                );*/
                               },
                               icon: Icon(Icons.edit)),
                           IconButton(
                               onPressed: () {
-                                context
-                                    .read<ListCubit>()
-                                    .deleteNote(index: index);
+                                context.read<ListCubit>().deleteNote(noteCubitId: mNotes[index].noteCubitId);
                               },
                               icon: Icon(
                                 Icons.delete,
@@ -180,9 +182,9 @@ class noteList extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddNoteCubit()));
+        onPressed: ()
+        {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddNoteCubit()));
         },
         child: Icon(Icons.add),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learning_flutter_wigdets/state_management_cubit/list_map_cubit.dart';
+import 'package:learning_flutter_wigdets/state_management_cubit/list_model.dart';
 import 'package:provider/provider.dart';
 
 class AddNoteCubit extends StatelessWidget
@@ -60,7 +61,7 @@ class AddNoteCubit extends StatelessWidget
               children: [
                 ElevatedButton(onPressed: ()
                 {
-                  BlocProvider.of<ListCubit>(context, listen: false).addNote(title: addTitleController.text, desc: addDescController.text);
+                  BlocProvider.of<ListCubit>(context, listen: false).addNote(listCubitModel: ListCubitModel(titleCubit: addTitleController.text, descCubit: addDescController.text));
                   Navigator.pop(context);
                 },
                     child: Text("Add")),
