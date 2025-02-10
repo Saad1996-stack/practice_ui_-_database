@@ -6,5 +6,5 @@ class ListState
 {
   List<ListCubitModel> mData = [];
 
-  ListState({required this.mData});
+   ListState({required this.mData});
 }

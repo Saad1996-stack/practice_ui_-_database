@@ -71,7 +71,8 @@ class DBHelperCubit
   Future<bool>deleteNotesCubit({required int noteCubitId})
   async{
     var database = await openDBCubit();
-    int rowsEffected = await database.delete(TABLE_NAME_NOTE,where: "$COLUMN_NAME_NOTE_ID = $noteCubitId");
+    int rowsEffected = await database.delete(TABLE_NAME_NOTE,
+        where: "$COLUMN_NAME_NOTE_ID = $noteCubitId");
     return rowsEffected>0;
   }
 }

@@ -8,7 +8,6 @@ import 'package:learning_flutter_wigdets/state_management_cubit/list_model.dart'
 class ListCubit extends Cubit<ListState>
 {
 
-
   final DBHelperCubit dbHelperCubit;
   ListCubit(this.dbHelperCubit) : super(ListState(mData: []));
 

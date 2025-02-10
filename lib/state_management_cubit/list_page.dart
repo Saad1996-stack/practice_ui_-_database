@@ -57,7 +57,7 @@ class _noteListState extends State<noteList>
           return mNotes.isNotEmpty
               ? ListView.builder(
                   itemCount: mNotes.length,
-                  itemBuilder: (context, index)
+                  itemBuilder: (ctx, index)
                   {
                     return ListTile(
                       title: Text(mNotes[index].titleCubit),
